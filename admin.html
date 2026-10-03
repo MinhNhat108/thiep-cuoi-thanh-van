@@ -25,6 +25,10 @@ textarea{min-height:110px;resize:vertical}
 .row{display:grid;gap:12px;grid-template-columns:1fr}
 @media(min-width:520px){.row.two{grid-template-columns:150px 1fr}}
 .field{margin-bottom:12px}
+.side-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.side-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--line);border-radius:99px;cursor:pointer;background:#fffdf9;font-size:14px;font-weight:600;color:var(--ink);transition:.15s}
+.side-chip:has(input:checked){background:var(--wine);color:#fff;border-color:var(--wine)}
+.side-chip input{display:none}
 button,.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--wine);color:#fff;text-decoration:none;display:inline-block;transition:.15s}
 button:hover,.btn:hover{background:var(--wine-d)}
 button:disabled{opacity:.45;cursor:not-allowed}
@@ -68,7 +72,7 @@ tr:hover td{background:#fffaf2}
 <body>
 <header>
   <h1>Tạo thiệp mời cá nhân hóa</h1>
-  <p>Đám cưới Ngọc Thành & Vân Anh · Quản lý khách mời</p>
+  <p>Đám cưới Ngọc Thành & Vân Anh · Phân loại Nhà Trai / Nhà Gái</p>
 </header>
 
 <main>
@@ -76,6 +80,16 @@ tr:hover td{background:#fffaf2}
   <h2>1. Tạo link mời</h2>
   <div class="gen">
     <div>
+      <div class="field">
+        <label>Khách mời của</label>
+        <div class="side-chips">
+          <label class="side-chip"><input type="radio" name="side" value="trai" checked> <span>🎩 Nhà Trai (Chú rể)</span></label>
+          <label class="side-chip"><input type="radio" name="side" value="gai"> <span>👰 Nhà Gái (Cô dâu)</span></label>
+          <label class="side-chip"><input type="radio" name="side" value=""> <span>✨ Cả hai bên (Chung)</span></label>
+        </div>
+        <div class="hint" id="sideHint">Chỉ hiện tiệc cưới Nhà Trai (28/11 tại Khách sạn Hacinco, Hà Nội), tự động ẩn lễ nhà gái.</div>
+      </div>
+
       <div class="row two">
         <div class="field"><label for="title">Danh xưng</label>
           <select id="title">
@@ -87,7 +101,7 @@ tr:hover td{background:#fffaf2}
           <input id="name" placeholder="VD: Minh Anh" autocomplete="off"></div>
       </div>
       <div class="field"><label for="group">Nhóm (tùy chọn)</label>
-        <input id="group" list="groups" placeholder="VD: Bạn bè, Họ hàng nhà trai, Đồng nghiệp…">
+        <input id="group" list="groups" placeholder="VD: Bạn bè, Họ hàng, Đồng nghiệp…">
         <datalist id="groups"></datalist></div>
       <label>Link thiệp</label>
       <div class="linkbox" id="link">Nhập tên khách mời để tạo link…</div>
@@ -109,7 +123,7 @@ tr:hover td{background:#fffaf2}
 <section class="card">
   <h2>2. Nhập hàng loạt</h2>
   <div class="row two" style="grid-template-columns:1fr">
-    <div class="field"><label for="bulk">Mỗi dòng một khách mời</label>
+    <div class="field"><label for="bulk">Mỗi dòng một khách mời (sẽ lưu theo bên đang chọn ở trên)</label>
       <textarea id="bulk" placeholder="Anh Hoàng Nam&#10;Chị Lan Hương, Đồng nghiệp&#10;Gia đình cô Mai"></textarea>
       <div class="hint">Định dạng: <code>Danh xưng Tên</code> hoặc <code>Tên, Nhóm</code>. Dòng trống sẽ được bỏ qua; khách trùng tên sẽ không thêm lại.</div></div>
   </div>
@@ -128,6 +142,12 @@ tr:hover td{background:#fffaf2}
   </div>
   <div class="tools">
     <input id="search" type="search" placeholder="🔍 Tìm theo tên, nhóm…">
+    <select id="filterSide">
+      <option value="all">Tất cả bên (Trai & Gái)</option>
+      <option value="trai">Nhà Trai</option>
+      <option value="gai">Nhà Gái</option>
+      <option value="both">Cả hai bên</option>
+    </select>
     <select id="filter">
       <option value="all">Tất cả trạng thái</option>
       <option value="0">Chưa gửi</option><option value="1">Đã gửi</option><option value="2">Đã xác nhận</option>
@@ -137,7 +157,7 @@ tr:hover td{background:#fffaf2}
   </div>
   <div class="tablewrap">
     <table>
-      <thead><tr><th>#</th><th>Khách mời</th><th>Nhóm</th><th>Link</th><th>Ngày tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+      <thead><tr><th>#</th><th>Khách mời</th><th>Bên</th><th>Nhóm</th><th>Link</th><th>Ngày tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
@@ -149,14 +169,20 @@ tr:hover td{background:#fffaf2}
 (function(){
 'use strict';
 const BASE = 'https://minhnhat108.github.io/thiep-cuoi-thanh-van/';
-const KEY = 'thiep-cuoi-guests-v1';
+const KEY = 'thiep-cuoi-guests-v2';
 const STATUS = ['Chưa gửi','Đã gửi','Đã xác nhận'];
 const TITLES = ['Bạn','Anh chị','Anh','Chị','Em','Cô chú','Cô giáo','Cô','Chú','Bác','Gia đình','Ông bà','Thầy'];
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 let guests = [];
-try { guests = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ guests = []; }
+try {
+  // Migrate v1 to v2 if exists
+  const old = localStorage.getItem('thiep-cuoi-guests-v1');
+  const cur = localStorage.getItem(KEY);
+  if (cur) guests = JSON.parse(cur) || [];
+  else if (old) guests = (JSON.parse(old) || []).map(g => ({...g, side: g.side || 'trai'}));
+} catch(e){ guests = []; }
 const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(guests)); } catch(e){ toast('Không lưu được vào trình duyệt'); } };
 
 let tt;
@@ -166,25 +192,71 @@ async function copy(text, okMsg){
   catch(e){ const a=document.createElement('textarea'); a.value=text; document.body.appendChild(a); a.select(); try{document.execCommand('copy');}catch(_){} a.remove(); }
   toast(okMsg);
 }
-const makeLink = full => BASE + '?to=' + encodeURIComponent(full);
+
+const getSide = () => {
+  const r = document.querySelector('input[name="side"]:checked');
+  return r ? r.value : 'trai';
+};
+
+const makeLink = (full, side) => BASE + '?to=' + encodeURIComponent(full) + (side ? '&side=' + encodeURIComponent(side) : '');
 const fullName = (title,name) => (title + ' ' + name).trim();
-const msg = (full, link) =>
-`Kính gửi ${full},
+
+const msg = (full, link, side) => {
+  if (side === 'trai') {
+    return `Kính gửi ${full},
+
+Gia đình chúng tôi trân trọng kính mời ${full} đến dự Tiệc Cưới Nhà Trai của Ngọc Thành & Vân Anh.
+
+⏰ Thời gian: 11:30 Thứ Bảy, ngày 28/11/2026
+📍 Địa điểm: Trung tâm tiệc cưới Khách Sạn Hacinco
+(Sảnh Salon 2, tầng 2 · Số 110 Phố Thái Thịnh, Đống Đa, Hà Nội)
+
+Kính mời ${full} xem thiệp cưới và bản đồ chỉ đường tại:
+${link}
+
+Sự hiện diện của ${full} là niềm vinh hạnh lớn của gia đình chúng tôi! Trân trọng. 💍`;
+  }
+  if (side === 'gai') {
+    return `Kính gửi ${full},
+
+Gia đình chúng tôi trân trọng kính mời ${full} đến dự Tiệc Cưới Nhà Gái của Vân Anh & Ngọc Thành.
+
+⏰ Thời gian: 17:30 Thứ Năm, ngày 26/11/2026
+📍 Địa điểm: Trung tâm hội nghị & tiệc cưới GODEL PALACE
+(Sảnh cưới tầng 2 · Số 98A Đại lộ Đông A, Nam Định, Tỉnh Ninh Bình)
+
+Kính mời ${full} xem thiệp cưới và bản đồ chỉ đường tại:
+${link}
+
+Sự hiện diện của ${full} là niềm vinh hạnh lớn của gia đình chúng tôi! Trân trọng. 💍`;
+  }
+  return `Kính gửi ${full},
 
 Gia đình chúng tôi trân trọng kính mời ${full} đến dự lễ cưới của Ngọc Thành & Vân Anh.
 Sự hiện diện của ${full} là niềm vinh hạnh và là món quà quý giá nhất đối với đôi uyên ương và hai gia đình.
 
-Mời ${full} xem thiệp cưới và thông tin chi tiết tại:
+Kính mời ${full} xem thiệp cưới và thông tin chi tiết tại:
 ${link}
 
 Rất mong được đón tiếp! Trân trọng cảm ơn. 💍`;
+};
 
 /* ---------- Generator ---------- */
 let curLink = '';
 function current(){ const n=$('name').value.trim(); return n ? fullName($('title').value,n) : ''; }
+function updateSideHint(){
+  const s = getSide();
+  const h = $('sideHint');
+  if (s === 'trai') h.textContent = 'Chỉ hiện tiệc cưới Nhà Trai (28/11 tại Khách sạn Hacinco, Hà Nội), tự động ẩn lễ nhà gái.';
+  else if (s === 'gai') h.textContent = 'Chỉ hiện tiệc cưới & Lễ Vu Quy Nhà Gái (26/11 tại GODEL PALACE, Nam Định), tự động ẩn phần tổ chức nhà trai.';
+  else h.textContent = 'Hiển thị đầy đủ tất cả sự kiện của cả Nhà Trai và Nhà Gái.';
+}
+
 function renderGen(){
-  const full=current();
-  curLink = full ? makeLink(full) : '';
+  updateSideHint();
+  const full = current();
+  const s = getSide();
+  curLink = full ? makeLink(full, s) : '';
   $('link').textContent = curLink || 'Nhập tên khách mời để tạo link…';
   ['copyLink','copyMsg','preview','save','dlQr'].forEach(i=>$(i).disabled=!full);
   const q=$('qr');
@@ -193,30 +265,46 @@ function renderGen(){
   if(window.QRCode){ new QRCode(q,{text:curLink,width:184,height:184,colorDark:'#6E0F1A',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M}); }
   else q.textContent='Không tải được thư viện QR (cần internet)';
 }
+
 ['title','name'].forEach(i=>$(i).addEventListener('input',renderGen));
+document.querySelectorAll('input[name="side"]').forEach(r=>r.addEventListener('change',renderGen));
+
 $('copyLink').onclick=()=>copy(curLink,'Đã sao chép link!');
-$('copyMsg').onclick=()=>copy(msg(current(),curLink),'Đã sao chép tin nhắn mời!');
+$('copyMsg').onclick=()=>copy(msg(current(),curLink,getSide()),'Đã sao chép tin nhắn mời!');
 $('preview').onclick=()=>window.open(curLink,'_blank','noopener');
 $('dlQr').onclick=()=>{
   const c=$('qr').querySelector('canvas'), im=$('qr').querySelector('img');
   const src=c?c.toDataURL('image/png'):(im&&im.src); if(!src) return;
   const a=document.createElement('a'); a.href=src; a.download='qr-'+current().replace(/\s+/g,'-')+'.png'; a.click();
 };
-function addGuest(full, group){
-  if(guests.some(g=>g.name.toLowerCase()===full.toLowerCase())) return false;
-  guests.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:full,group:group||'',link:makeLink(full),created:new Date().toISOString(),status:0});
+
+function addGuest(full, group, side){
+  side = side != null ? side : getSide();
+  if(guests.some(g=>g.name.toLowerCase()===full.toLowerCase() && (g.side||'')===side)) return false;
+  guests.unshift({
+    id: Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    name: full,
+    group: group || '',
+    side: side,
+    link: makeLink(full, side),
+    created: new Date().toISOString(),
+    status: 0
+  });
   return true;
 }
+
 $('save').onclick=()=>{
-  if(!addGuest(current(),$('group').value.trim())) return toast('Khách này đã có trong danh sách');
+  if(!addGuest(current(),$('group').value.trim(),getSide())) return toast('Khách này đã có trong danh sách');
   persist(); render(); toast('Đã lưu vào danh sách'); $('name').value=''; renderGen(); $('name').focus();
 };
+
 $('bulkAdd').onclick=()=>{
   let added=0,dup=0;
+  const currentSide = getSide();
   $('bulk').value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach(line=>{
     let [n,...g]=line.split(','); n=n.trim().replace(/\s+/g,' '); if(!n) return;
     if(!TITLES.some(t=>n.toLowerCase().startsWith(t.toLowerCase()+' '))) n='Bạn '+n;
-    addGuest(n,g.join(',').trim())?added++:dup++;
+    addGuest(n,g.join(',').trim(),currentSide)?added++:dup++;
   });
   if(!added&&!dup) return toast('Chưa có tên nào để thêm');
   persist(); render(); $('bulk').value='';
@@ -231,24 +319,37 @@ function render(){
   $('sSent').textContent=guests.filter(g=>g.status===1).length;
   $('sUnsent').textContent=guests.filter(g=>g.status===0).length;
   $('sConf').textContent=guests.filter(g=>g.status===2).length;
-  const q=$('search').value.trim().toLowerCase(), f=$('filter').value;
-  const list=guests.filter(g=>(f==='all'||String(g.status)===f)&&(!q||(g.name+' '+g.group).toLowerCase().includes(q)));
-  $('rows').innerHTML=list.length?list.map((g,i)=>`<tr data-id="${g.id}">
-    <td data-l="#">${i+1}</td>
-    <td data-l="Khách"><b>${esc(g.name)}</b></td>
-    <td data-l="Nhóm">${esc(g.group)||'—'}</td>
-    <td data-l="Link"><a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--wine)">Mở thiệp</a></td>
-    <td data-l="Ngày tạo">${fmt(g.created)}</td>
-    <td data-l="Trạng thái"><span class="badge b${g.status}">${STATUS[g.status]}</span></td>
-    <td><div class="cell-actions">
-      <button class="btn sm" data-a="toggle">${g.status===0?'Đánh dấu đã gửi':'Đánh dấu chưa gửi'}</button>
-      <button class="btn sm ghost" data-a="confirm">${g.status===2?'Bỏ xác nhận':'Đã xác nhận'}</button>
-      <button class="btn sm ghost" data-a="link">Link</button>
-      <button class="btn sm ghost" data-a="msg">Tin nhắn</button>
-      <button class="btn sm ghost" data-a="qr">QR</button>
-      <button class="btn sm ghost" data-a="del">Xóa</button>
-    </div></td></tr>`).join(''):`<tr><td colspan="7" class="empty">${guests.length?'Không có khách phù hợp.':'Chưa có khách mời nào. Hãy tạo link hoặc nhập hàng loạt ở trên.'}</td></tr>`;
+  const q=$('search').value.trim().toLowerCase(), f=$('filter').value, fs=$('filterSide').value;
+  const list=guests.filter(g=>{
+    const matchStatus = (f==='all'||String(g.status)===f);
+    const matchSide = (fs==='all' || (fs==='trai'&&g.side==='trai') || (fs==='gai'&&g.side==='gai') || (fs==='both'&&!g.side));
+    const matchQuery = (!q||(g.name+' '+(g.group||'')+' '+(g.side==='trai'?'nhà trai':(g.side==='gai'?'nhà gái':'cả hai'))).toLowerCase().includes(q));
+    return matchStatus && matchSide && matchQuery;
+  });
+
+  $('rows').innerHTML=list.length?list.map((g,i)=>{
+    const sBadge = g.side==='trai'
+      ? '<span class="badge" style="background:#fbeae5;color:#6E0F1A">Nhà trai</span>'
+      : (g.side==='gai' ? '<span class="badge" style="background:#fce7f3;color:#9d174d">Nhà gái</span>' : '<span class="badge" style="background:#f1f5f9;color:#475569">Cả hai</span>');
+    return `<tr data-id="${g.id}">
+      <td data-l="#">${i+1}</td>
+      <td data-l="Khách"><b>${esc(g.name)}</b></td>
+      <td data-l="Bên">${sBadge}</td>
+      <td data-l="Nhóm">${esc(g.group)||'—'}</td>
+      <td data-l="Link"><a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--wine)">Mở thiệp</a></td>
+      <td data-l="Ngày tạo">${fmt(g.created)}</td>
+      <td data-l="Trạng thái"><span class="badge b${g.status}">${STATUS[g.status]}</span></td>
+      <td><div class="cell-actions">
+        <button class="btn sm" data-a="toggle">${g.status===0?'Đánh dấu đã gửi':'Đánh dấu chưa gửi'}</button>
+        <button class="btn sm ghost" data-a="confirm">${g.status===2?'Bỏ xác nhận':'Đã xác nhận'}</button>
+        <button class="btn sm ghost" data-a="link">Link</button>
+        <button class="btn sm ghost" data-a="msg">Tin nhắn</button>
+        <button class="btn sm ghost" data-a="qr">QR</button>
+        <button class="btn sm ghost" data-a="del">Xóa</button>
+      </div></td></tr>`;
+  }).join(''):`<tr><td colspan="8" class="empty">${guests.length?'Không có khách phù hợp.':'Chưa có khách mời nào. Hãy tạo link hoặc nhập hàng loạt ở trên.'}</td></tr>`;
 }
+
 $('rows').addEventListener('click',e=>{
   const b=e.target.closest('button[data-a]'); if(!b) return;
   const g=guests.find(x=>x.id===b.closest('tr').dataset.id); if(!g) return;
@@ -256,22 +357,30 @@ $('rows').addEventListener('click',e=>{
   if(a==='toggle'){ g.status=g.status===0?1:0; persist(); render(); }
   else if(a==='confirm'){ g.status=g.status===2?1:2; persist(); render(); }
   else if(a==='link') copy(g.link,'Đã sao chép link!');
-  else if(a==='msg') copy(msg(g.name,g.link),'Đã sao chép tin nhắn mời!');
-  else if(a==='qr'){ const [t,...r]=g.name.split(' '); const full=g.name;
+  else if(a==='msg') copy(msg(g.name,g.link,g.side),'Đã sao chép tin nhắn mời!');
+  else if(a==='qr'){
+    const full=g.name;
     const m=TITLES.find(x=>full.toLowerCase().startsWith(x.toLowerCase()+' '));
-    $('title').value=m||'Bạn'; $('name').value=m?full.slice(m.length).trim():full; renderGen(); scrollTo({top:0,behavior:'smooth'}); }
+    $('title').value=m||'Bạn'; $('name').value=m?full.slice(m.length).trim():full;
+    const r=document.querySelector(`input[name="side"][value="${g.side||''}"]`);
+    if(r) r.checked=true;
+    renderGen(); scrollTo({top:0,behavior:'smooth'});
+  }
   else if(a==='del'){ if(confirm('Xóa '+g.name+'?')){ guests=guests.filter(x=>x!==g); persist(); render(); } }
 });
+
 $('search').addEventListener('input',render);
 $('filter').addEventListener('change',render);
+$('filterSide').addEventListener('change',render);
 $('clear').onclick=()=>{ if(guests.length&&confirm('Xóa toàn bộ '+guests.length+' khách mời?')){ guests=[]; persist(); render(); toast('Đã xóa danh sách'); } };
 
 /* ---------- CSV ---------- */
 $('csv').onclick=()=>{
   if(!guests.length) return toast('Danh sách đang trống');
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
-  const rows=[['STT','Khách mời','Nhóm','Link','Ngày tạo','Trạng thái']].concat(
-    guests.map((g,i)=>[i+1,g.name,g.group,g.link,fmt(g.created),STATUS[g.status]]));
+  const sideText = s => s==='trai'?'Nhà trai':(s==='gai'?'Nhà gái':'Cả hai');
+  const rows=[['STT','Khách mời','Bên','Nhóm','Link','Ngày tạo','Trạng thái']].concat(
+    guests.map((g,i)=>[i+1,g.name,sideText(g.side),g.group,g.link,fmt(g.created),STATUS[g.status]]));
   const csv='﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));

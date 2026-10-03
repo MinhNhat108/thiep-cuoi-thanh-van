@@ -255,7 +255,35 @@ body.editing .card{margin-left:auto}
 const DATA_EL = document.getElementById('wedding-data');
 const ORIGINAL = DATA_EL.textContent;
 let S = JSON.parse(ORIGINAL);
-try { const qp = new URLSearchParams(window.location.search); const guestParam = qp.get("to") || qp.get("guest"); if (guestParam && guestParam.trim()) S.guest = guestParam.trim(); } catch (e) {}
+try {
+  const qp = new URLSearchParams(window.location.search);
+  const guestParam = qp.get("to") || qp.get("guest");
+  if (guestParam && guestParam.trim()) S.guest = guestParam.trim();
+  const sideParam = (qp.get("side") || qp.get("nha") || "").toLowerCase().trim();
+  if (sideParam === 'trai' || sideParam === 'nhatrai' || sideParam === 'groom') {
+    S.side = 'trai';
+    S.events = (S.events || []).filter(e => {
+      const t = (e.title || '').toLowerCase();
+      return !t.includes('nhà gái') && !t.includes('vu quy');
+    });
+    S.date = "2026-11-28";
+    S.time = "11:30";
+    if (Array.isArray(S.banks)) {
+      S.banks = S.banks.filter(b => /chú rể|groom|vũ ngọc thành|thành/i.test((b.who||'') + ' ' + (b.name||'')));
+    }
+  } else if (sideParam === 'gai' || sideParam === 'nhagai' || sideParam === 'bride') {
+    S.side = 'gai';
+    S.events = (S.events || []).filter(e => {
+      const t = (e.title || '').toLowerCase();
+      return !t.includes('nhà trai') && !t.includes('thành hôn');
+    });
+    S.date = "2026-11-26";
+    S.time = "17:30";
+    if (Array.isArray(S.banks)) {
+      S.banks = S.banks.filter(b => /cô dâu|bride|phạm thị vân anh|vân anh/i.test((b.who||'') + ' ' + (b.name||'')));
+    }
+  }
+} catch (e) {}
 const app = document.getElementById('app');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EDIT = /^#(sua|edit)$/i.test(location.hash);
@@ -335,7 +363,7 @@ function cardHTML(s){
 <main class="card" id="card">
   <section class="hero">
     <div class="wd gold-text">Wedding Day</div>
-    <div class="sub">Lễ thành hôn</div>
+    <div class="sub">${s.side === 'gai' ? 'Lễ vu quy' : 'Lễ thành hôn'}</div>
     <div class="arch"><div class="arch-in">${imgOK(ph.hero) ? img(ph.hero, 'Ảnh cưới') : `<div class="mono-big">${esc(gi)}&amp;${esc(bi)}</div>`}</div></div>
     <div class="names">${esc(g.short)}<span class="amp">&amp;</span>${esc(b.short)}</div>
     <div class="hdate">${dstr}</div>
@@ -420,7 +448,7 @@ function cardHTML(s){
         <label for="r-go">Bạn sẽ đến chứ?<select id="r-go" name="go"><option>Chắc chắn rồi</option><option>Có thể</option><option>Tiếc quá, không đến được</option></select></label>
         <label for="r-count">Đi cùng mấy người?<select id="r-count" name="count"><option>Đi một mình</option><option>2 người</option><option>3 người</option><option>4 người trở lên</option></select></label>
       </div>
-      <label for="r-side">Bạn là khách mời của ai?<select id="r-side" name="side"><option>Khách của chú rể</option><option>Khách của cô dâu</option><option>Khách của cả hai</option></select></label>
+      <label for="r-side">Bạn là khách mời của ai?<select id="r-side" name="side"><option ${s.side==='trai'?'selected':''}>Khách của chú rể</option><option ${s.side==='gai'?'selected':''}>Khách của cô dâu</option><option ${!s.side?'selected':''}>Khách của cả hai</option></select></label>
       <p id="r-err" class="center" style="color:var(--wine);margin:0;font-size:15px" hidden>Bạn nhập tên giúp chúng mình nhé.</p>
       <div class="actions">
         <button class="btn" type="submit">Gửi lời chúc &amp; xác nhận</button>
@@ -457,7 +485,7 @@ ${s.music ? `<button class="music" type="button" data-act="music" aria-label="B�
 function coverHTML(s){
   const p = parts(s.date), g = s.groom || {}, b = s.bride || {};
   return `<div class="cover" id="cover">
-    <div class="cover-to"><div class="caps">Thân mời</div><div class="guest">${esc(s.guest || 'Bạn')}</div></div>
+    <div class="cover-to"><div class="caps">${s.side === 'trai' ? 'Tiệc cưới Nhà Trai · Thân mời' : (s.side === 'gai' ? 'Tiệc cưới Nhà Gái · Thân mời' : 'Thân mời')}</div><div class="guest">${esc(s.guest || 'Bạn')}</div></div>
     <div class="env">
       <div class="env-back"></div>
       <div class="letter"><div class="caps">Save the date</div><div class="script">${esc(g.short)} &amp; ${esc(b.short)}</div><div class="caps">${p ? `${pad(p.da)} . ${pad(p.mo)} . ${p.y}` : ''}</div></div>
