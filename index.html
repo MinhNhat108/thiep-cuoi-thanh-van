@@ -255,6 +255,7 @@ body.editing .card{margin-left:auto}
 const DATA_EL = document.getElementById('wedding-data');
 const ORIGINAL = DATA_EL.textContent;
 let S = JSON.parse(ORIGINAL);
+try { const qp = new URLSearchParams(window.location.search); const guestParam = qp.get("to") || qp.get("guest"); if (guestParam && guestParam.trim()) S.guest = guestParam.trim(); } catch (e) {}
 const app = document.getElementById('app');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EDIT = /^#(sua|edit)$/i.test(location.hash);

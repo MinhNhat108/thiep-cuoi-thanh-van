@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Tạo thiệp mời · Ngọc Thành & Vân Anh</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--wine:#6E0F1A;--wine-d:#520a13;--gold:#C9A465;--gold-d:#a8854a;--cream:#F8F3ED;--ink:#2b1a1c;--mut:#7a6a68;--line:#e6d9c6;--card:#fff;--ok:#2f7d4f;--warn:#b8791c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+header{background:var(--wine);color:var(--cream);text-align:center;padding:28px 16px;border-bottom:4px solid var(--gold)}
+header h1{margin:0;font:600 clamp(24px,5vw,34px) Georgia,"Times New Roman",serif;color:var(--gold);letter-spacing:.5px}
+header p{margin:6px 0 0;opacity:.85;font-size:14px}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 60px;display:grid;gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(110,15,26,.06)}
+h2{margin:0 0 14px;font:600 20px Georgia,serif;color:var(--wine)}
+.gen{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:800px){.gen{grid-template-columns:1.3fr 1fr}}
+label{display:block;font-size:13px;font-weight:600;color:var(--wine);margin:0 0 4px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fffdf9;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+textarea{min-height:110px;resize:vertical}
+.row{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:520px){.row.two{grid-template-columns:150px 1fr}}
+.field{margin-bottom:12px}
+button,.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--wine);color:#fff;text-decoration:none;display:inline-block;transition:.15s}
+button:hover,.btn:hover{background:var(--wine-d)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.btn.gold{background:var(--gold);color:var(--wine-d)}.btn.gold:hover{background:var(--gold-d);color:#fff}
+.btn.ghost{background:transparent;color:var(--wine);border:1px solid var(--wine)}.btn.ghost:hover{background:var(--wine);color:#fff}
+.btn.sm{padding:6px 10px;font-size:13px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.linkbox{word-break:break-all;background:var(--cream);border:1px dashed var(--gold);border-radius:10px;padding:10px 12px;font-size:13px;min-height:42px;color:var(--wine)}
+.qr{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+#qr{background:#fff;padding:12px;border:1px solid var(--line);border-radius:12px;min-width:184px;min-height:184px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:13px}
+#qr img,#qr canvas{display:block}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font:700 26px Georgia,serif;color:var(--wine)}
+.stat span{font-size:12px;color:var(--mut)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 12px}
+.tools input{flex:1 1 200px}.tools select{flex:0 0 auto;width:auto}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--wine);color:var(--gold);text-align:left;padding:10px;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:hover td{background:#fffaf2}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap}
+.b0{background:#f3e3d0;color:var(--warn)}.b1{background:#dcefe3;color:var(--ok)}.b2{background:#e6dcf3;color:#5b3a8a}
+.cell-actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty{text-align:center;color:var(--mut);padding:26px 0}
+.hint{font-size:12px;color:var(--mut);margin-top:4px}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--wine);color:var(--cream);padding:11px 20px;border-radius:99px;border:1px solid var(--gold);opacity:0;pointer-events:none;transition:.25s;z-index:99;font-size:14px;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+/* Mobile: bảng thành thẻ */
+@media(max-width:700px){
+ table,thead,tbody,tr,td{display:block}
+ thead{display:none}
+ tr{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;padding:8px;background:#fffdf9}
+ td{border:0;padding:4px 6px}
+ td[data-l]::before{content:attr(data-l)": ";font-weight:600;color:var(--wine);font-size:12px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Tạo thiệp mời cá nhân hóa</h1>
+  <p>Đám cưới Ngọc Thành & Vân Anh · Quản lý khách mời</p>
+</header>
+
+<main>
+<section class="card">
+  <h2>1. Tạo link mời</h2>
+  <div class="gen">
+    <div>
+      <div class="row two">
+        <div class="field"><label for="title">Danh xưng</label>
+          <select id="title">
+            <option>Bạn</option><option>Anh</option><option>Chị</option><option>Em</option>
+            <option>Cô</option><option>Chú</option><option>Bác</option><option>Cô chú</option>
+            <option>Anh chị</option><option>Gia đình</option><option>Ông bà</option><option>Thầy</option><option>Cô giáo</option>
+          </select></div>
+        <div class="field"><label for="name">Tên khách mời</label>
+          <input id="name" placeholder="VD: Minh Anh" autocomplete="off"></div>
+      </div>
+      <div class="field"><label for="group">Nhóm (tùy chọn)</label>
+        <input id="group" list="groups" placeholder="VD: Bạn bè, Họ hàng nhà trai, Đồng nghiệp…">
+        <datalist id="groups"></datalist></div>
+      <label>Link thiệp</label>
+      <div class="linkbox" id="link">Nhập tên khách mời để tạo link…</div>
+      <div class="actions">
+        <button id="copyLink" disabled>📋 Sao chép link</button>
+        <button id="copyMsg" class="btn gold" disabled>💌 Sao chép tin nhắn mời</button>
+        <button id="preview" class="btn ghost" disabled>👁 Xem thử thiệp</button>
+        <button id="save" class="btn ghost" disabled>＋ Lưu vào danh sách</button>
+      </div>
+    </div>
+    <div class="qr">
+      <label>Mã QR của link</label>
+      <div id="qr">Chưa có link</div>
+      <button id="dlQr" class="btn sm ghost" disabled>Tải mã QR</button>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>2. Nhập hàng loạt</h2>
+  <div class="row two" style="grid-template-columns:1fr">
+    <div class="field"><label for="bulk">Mỗi dòng một khách mời</label>
+      <textarea id="bulk" placeholder="Anh Hoàng Nam&#10;Chị Lan Hương, Đồng nghiệp&#10;Gia đình cô Mai"></textarea>
+      <div class="hint">Định dạng: <code>Danh xưng Tên</code> hoặc <code>Tên, Nhóm</code>. Dòng trống sẽ được bỏ qua; khách trùng tên sẽ không thêm lại.</div></div>
+  </div>
+  <div class="actions" style="margin-top:0">
+    <button id="bulkAdd">Thêm tất cả vào danh sách</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>3. Danh sách khách mời</h2>
+  <div class="stats">
+    <div class="stat"><b id="sTotal">0</b><span>Tổng số khách</span></div>
+    <div class="stat"><b id="sSent">0</b><span>Đã gửi</span></div>
+    <div class="stat"><b id="sUnsent">0</b><span>Chưa gửi</span></div>
+    <div class="stat"><b id="sConf">0</b><span>Đã xác nhận</span></div>
+  </div>
+  <div class="tools">
+    <input id="search" type="search" placeholder="🔍 Tìm theo tên, nhóm…">
+    <select id="filter">
+      <option value="all">Tất cả trạng thái</option>
+      <option value="0">Chưa gửi</option><option value="1">Đã gửi</option><option value="2">Đã xác nhận</option>
+    </select>
+    <button id="csv" class="btn gold">⬇ Xuất CSV / Excel</button>
+    <button id="clear" class="btn ghost">Xóa tất cả</button>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>Khách mời</th><th>Nhóm</th><th>Link</th><th>Ngày tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+const BASE = 'https://minhnhat108.github.io/thiep-cuoi-thanh-van/';
+const KEY = 'thiep-cuoi-guests-v1';
+const STATUS = ['Chưa gửi','Đã gửi','Đã xác nhận'];
+const TITLES = ['Bạn','Anh chị','Anh','Chị','Em','Cô chú','Cô giáo','Cô','Chú','Bác','Gia đình','Ông bà','Thầy'];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let guests = [];
+try { guests = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ guests = []; }
+const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(guests)); } catch(e){ toast('Không lưu được vào trình duyệt'); } };
+
+let tt;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),2200); }
+async function copy(text, okMsg){
+  try { await navigator.clipboard.writeText(text); }
+  catch(e){ const a=document.createElement('textarea'); a.value=text; document.body.appendChild(a); a.select(); try{document.execCommand('copy');}catch(_){} a.remove(); }
+  toast(okMsg);
+}
+const makeLink = full => BASE + '?to=' + encodeURIComponent(full);
+const fullName = (title,name) => (title + ' ' + name).trim();
+const msg = (full, link) =>
+`Kính gửi ${full},
+
+Gia đình chúng tôi trân trọng kính mời ${full} đến dự lễ cưới của Ngọc Thành & Vân Anh.
+Sự hiện diện của ${full} là niềm vinh hạnh và là món quà quý giá nhất đối với đôi uyên ương và hai gia đình.
+
+Mời ${full} xem thiệp cưới và thông tin chi tiết tại:
+${link}
+
+Rất mong được đón tiếp! Trân trọng cảm ơn. 💍`;
+
+/* ---------- Generator ---------- */
+let curLink = '';
+function current(){ const n=$('name').value.trim(); return n ? fullName($('title').value,n) : ''; }
+function renderGen(){
+  const full=current();
+  curLink = full ? makeLink(full) : '';
+  $('link').textContent = curLink || 'Nhập tên khách mời để tạo link…';
+  ['copyLink','copyMsg','preview','save','dlQr'].forEach(i=>$(i).disabled=!full);
+  const q=$('qr');
+  if(!curLink){ q.textContent='Chưa có link'; return; }
+  q.innerHTML='';
+  if(window.QRCode){ new QRCode(q,{text:curLink,width:184,height:184,colorDark:'#6E0F1A',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M}); }
+  else q.textContent='Không tải được thư viện QR (cần internet)';
+}
+['title','name'].forEach(i=>$(i).addEventListener('input',renderGen));
+$('copyLink').onclick=()=>copy(curLink,'Đã sao chép link!');
+$('copyMsg').onclick=()=>copy(msg(current(),curLink),'Đã sao chép tin nhắn mời!');
+$('preview').onclick=()=>window.open(curLink,'_blank','noopener');
+$('dlQr').onclick=()=>{
+  const c=$('qr').querySelector('canvas'), im=$('qr').querySelector('img');
+  const src=c?c.toDataURL('image/png'):(im&&im.src); if(!src) return;
+  const a=document.createElement('a'); a.href=src; a.download='qr-'+current().replace(/\s+/g,'-')+'.png'; a.click();
+};
+function addGuest(full, group){
+  if(guests.some(g=>g.name.toLowerCase()===full.toLowerCase())) return false;
+  guests.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:full,group:group||'',link:makeLink(full),created:new Date().toISOString(),status:0});
+  return true;
+}
+$('save').onclick=()=>{
+  if(!addGuest(current(),$('group').value.trim())) return toast('Khách này đã có trong danh sách');
+  persist(); render(); toast('Đã lưu vào danh sách'); $('name').value=''; renderGen(); $('name').focus();
+};
+$('bulkAdd').onclick=()=>{
+  let added=0,dup=0;
+  $('bulk').value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach(line=>{
+    let [n,...g]=line.split(','); n=n.trim().replace(/\s+/g,' '); if(!n) return;
+    if(!TITLES.some(t=>n.toLowerCase().startsWith(t.toLowerCase()+' '))) n='Bạn '+n;
+    addGuest(n,g.join(',').trim())?added++:dup++;
+  });
+  if(!added&&!dup) return toast('Chưa có tên nào để thêm');
+  persist(); render(); $('bulk').value='';
+  toast(`Đã thêm ${added} khách`+(dup?`, bỏ qua ${dup} trùng`:''));
+};
+
+/* ---------- List ---------- */
+const fmt = iso => new Date(iso).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+function render(){
+  $('groups').innerHTML=[...new Set(guests.map(g=>g.group).filter(Boolean))].map(g=>`<option value="${esc(g)}">`).join('');
+  $('sTotal').textContent=guests.length;
+  $('sSent').textContent=guests.filter(g=>g.status===1).length;
+  $('sUnsent').textContent=guests.filter(g=>g.status===0).length;
+  $('sConf').textContent=guests.filter(g=>g.status===2).length;
+  const q=$('search').value.trim().toLowerCase(), f=$('filter').value;
+  const list=guests.filter(g=>(f==='all'||String(g.status)===f)&&(!q||(g.name+' '+g.group).toLowerCase().includes(q)));
+  $('rows').innerHTML=list.length?list.map((g,i)=>`<tr data-id="${g.id}">
+    <td data-l="#">${i+1}</td>
+    <td data-l="Khách"><b>${esc(g.name)}</b></td>
+    <td data-l="Nhóm">${esc(g.group)||'—'}</td>
+    <td data-l="Link"><a href="${esc(g.link)}" target="_blank" rel="noopener" style="color:var(--wine)">Mở thiệp</a></td>
+    <td data-l="Ngày tạo">${fmt(g.created)}</td>
+    <td data-l="Trạng thái"><span class="badge b${g.status}">${STATUS[g.status]}</span></td>
+    <td><div class="cell-actions">
+      <button class="btn sm" data-a="toggle">${g.status===0?'Đánh dấu đã gửi':'Đánh dấu chưa gửi'}</button>
+      <button class="btn sm ghost" data-a="confirm">${g.status===2?'Bỏ xác nhận':'Đã xác nhận'}</button>
+      <button class="btn sm ghost" data-a="link">Link</button>
+      <button class="btn sm ghost" data-a="msg">Tin nhắn</button>
+      <button class="btn sm ghost" data-a="qr">QR</button>
+      <button class="btn sm ghost" data-a="del">Xóa</button>
+    </div></td></tr>`).join(''):`<tr><td colspan="7" class="empty">${guests.length?'Không có khách phù hợp.':'Chưa có khách mời nào. Hãy tạo link hoặc nhập hàng loạt ở trên.'}</td></tr>`;
+}
+$('rows').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-a]'); if(!b) return;
+  const g=guests.find(x=>x.id===b.closest('tr').dataset.id); if(!g) return;
+  const a=b.dataset.a;
+  if(a==='toggle'){ g.status=g.status===0?1:0; persist(); render(); }
+  else if(a==='confirm'){ g.status=g.status===2?1:2; persist(); render(); }
+  else if(a==='link') copy(g.link,'Đã sao chép link!');
+  else if(a==='msg') copy(msg(g.name,g.link),'Đã sao chép tin nhắn mời!');
+  else if(a==='qr'){ const [t,...r]=g.name.split(' '); const full=g.name;
+    const m=TITLES.find(x=>full.toLowerCase().startsWith(x.toLowerCase()+' '));
+    $('title').value=m||'Bạn'; $('name').value=m?full.slice(m.length).trim():full; renderGen(); scrollTo({top:0,behavior:'smooth'}); }
+  else if(a==='del'){ if(confirm('Xóa '+g.name+'?')){ guests=guests.filter(x=>x!==g); persist(); render(); } }
+});
+$('search').addEventListener('input',render);
+$('filter').addEventListener('change',render);
+$('clear').onclick=()=>{ if(guests.length&&confirm('Xóa toàn bộ '+guests.length+' khách mời?')){ guests=[]; persist(); render(); toast('Đã xóa danh sách'); } };
+
+/* ---------- CSV ---------- */
+$('csv').onclick=()=>{
+  if(!guests.length) return toast('Danh sách đang trống');
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const rows=[['STT','Khách mời','Nhóm','Link','Ngày tạo','Trạng thái']].concat(
+    guests.map((g,i)=>[i+1,g.name,g.group,g.link,fmt(g.created),STATUS[g.status]]));
+  const csv='﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='khach-moi-thanh-van.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  toast('Đã xuất file CSV (mở được bằng Excel)');
+};
+
+render(); renderGen();
+})();
+</script>
+</body>
+</html>
