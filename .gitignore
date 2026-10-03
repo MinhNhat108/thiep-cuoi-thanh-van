@@ -1,0 +1,6 @@
+.agents/
+.agentsroom/
+.claude/
+.mcp.json
+.DS_Store
+Thumbs.db
