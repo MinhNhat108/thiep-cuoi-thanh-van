@@ -6,7 +6,7 @@
 <meta property="og:title" content="Thiệp cưới Ngọc Thành &amp; Vân Anh">
 <meta property="og:image" content="photos/hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&family=Pinyon+Script&family=Noto+Serif+Display:ital,wght@0,300;0,400;0,500;1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&family=Pinyon+Script&family=Noto+Serif+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap">
 <style>
 :root{
   color-scheme: light;
@@ -32,7 +32,7 @@ img{display:block;max-width:100%}
 .cover.fade{opacity:0;visibility:hidden;transform:translateY(-4%)}
 .cover-in{position:relative;z-index:1;height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column;align-items:center;padding:7vh 16px 0}
 .cover-names{text-align:center;margin:0;font-weight:400;color:var(--gold)}
-.cover-names .n{display:block;font-family:var(--script);font-size:clamp(36px,11.2vw,50px);line-height:1.35;font-weight:500;white-space:nowrap}
+.cover-names .n{-webkit-text-stroke:.7px currentColor;display:block;font-family:var(--script);font-size:clamp(36px,11.2vw,50px);line-height:1.35;font-weight:500;white-space:nowrap}
 .cover-names .a{display:block;line-height:1}
 .cover-date{font-size:24px;letter-spacing:.06em;margin:10px 0 0;font-weight:300}
 .env-wrap{margin:auto 0;width:100%;display:flex;flex-direction:column;align-items:center;padding:14px 0}
@@ -48,23 +48,25 @@ img{display:block;max-width:100%}
 .sealg{transform-box:fill-box;transform-origin:center;transition:opacity .45s,transform .45s}
 .cover.opening .sealg{opacity:0;transform:scale(.5)}
 .cover.opening .hand{opacity:0}
-.tap{font-size:19px;font-weight:300;color:var(--gold);text-align:center;margin:18px 0 0}
+.tap{font-size:20px;font-weight:500;color:var(--gold-dk);text-align:center;margin:18px 0 0}
 .cover-bar{margin-top:auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center;font-family:var(--ui);color:var(--gold);padding:14px 4px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(0deg,rgba(253,249,248,.95) 70%,transparent)}
-.cover-bar b{display:block;font-size:17px;font-weight:500}
-.cover-bar span{display:block;font-size:14px}
+.cover-bar b{display:block;font-size:18px;font-weight:700}
+.cover-bar{font-weight:500;color:var(--gold-dk)}
+.cover-bar span{display:block;font-size:14px;font-weight:500}
 
 /* ---------- invitation ---------- */
 .sec{position:relative;padding:48px 24px}
 .inv{padding-top:22px;text-align:center}
 .inv>*:not(.flora):not(.wash){position:relative;z-index:1}
 .fam{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center;font-family:var(--ui);color:var(--gold);font-size:15px;line-height:1.35;padding-bottom:6px}
-.fam b{display:block;font-size:17px;font-weight:500;margin-bottom:2px}
-.fam .pl{display:block;font-size:12.5px;opacity:.8;margin-top:3px}
+.fam b{display:block;font-size:19px;font-weight:700;margin-bottom:3px}
+.fam{font-weight:500;color:var(--gold-dk);font-size:16px}
+.fam .pl{display:block;font-size:13.5px;font-weight:500;opacity:1;margin-top:3px}
 .h-invite{font-family:var(--ui);font-weight:400;font-size:23px;letter-spacing:.02em;color:var(--gold);margin:46px 0 0}
 .guest-script{font-family:"Pinyon Script","WindSong",cursive;font-size:42px;color:var(--rose);margin:8px 0 2px;line-height:1.4;word-break:break-word;font-weight:500}
 .lede{margin:0 auto;max-width:30ch;font-size:16.5px;font-weight:400;color:var(--gold)}
 .names-big{margin:34px auto 6px;max-width:330px;line-height:1.05;text-align:center}
-.names-big .n{display:block;font-size:44px;font-weight:300;color:var(--gold);letter-spacing:.01em}
+.names-big .n{display:block;font-size:44px;font-weight:500;color:var(--gold);letter-spacing:.01em}
 .names-big .n.r{padding-left:70px}
 .rg{display:inline-block;fill:none;stroke:currentColor;stroke-width:2.2}
 .names-big .and{display:block;margin:6px 0 8px;transform:translateX(-22px)}
@@ -74,8 +76,8 @@ img{display:block;max-width:100%}
 .when-lbl{margin:26px 0 12px;font-size:16px;font-weight:400}
 .rule{height:2px;background:var(--line);width:84%;margin:0 auto}
 .when{padding:16px 0 14px;color:var(--gold)}
-.when .t{font-size:31px;font-weight:300;letter-spacing:.03em;text-transform:uppercase;line-height:1.3}
-.when .d{font-size:33px;font-weight:300;letter-spacing:.04em;line-height:1.3}
+.when .t{font-size:31px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;line-height:1.3}
+.when .d{font-size:33px;font-weight:500;letter-spacing:.04em;line-height:1.3}
 .lunar{font-size:14.5px;color:var(--muted);font-style:italic;margin-top:4px}
 .where-lbl{margin-top:26px;font-size:17px;font-weight:400}
 .vtop{margin:0 auto 26px;padding:16px 12px 20px;max-width:360px;border:1.5px solid var(--gold);background:rgba(255,255,255,.75);position:relative;z-index:1}
@@ -147,7 +149,7 @@ img{display:block;max-width:100%}
 .alb-title .al{font-size:26px;font-weight:300;letter-spacing:.06em;color:var(--gold);text-transform:uppercase;margin-left:18px}
 .alb-title .of{font-size:27px;font-weight:300;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;line-height:1.25}
 .tf{border:0;padding:0;cursor:pointer;background:var(--gold);box-shadow:0 8px 18px rgba(90,70,48,.25);display:block}
-.tf img{width:100%;height:100%;object-fit:cover;object-position:50% 3%;border:5px solid var(--gold)}
+.tf img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;border:5px solid var(--gold)}
 .alb-row.f1{min-height:350px}
 .tf.r1{position:absolute;right:-6px;top:0;width:58%;aspect-ratio:3/4;transform:rotate(5deg)}
 .tf.l1{width:56%;aspect-ratio:1/1.05;transform:rotate(-4deg);margin:0 0 0 6px}
@@ -309,7 +311,7 @@ function coverHTML(){
             <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6E4D8"/><stop offset="1" stop-color="#D2D0C1"/></linearGradient>
             <filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#5a4630" flood-opacity=".25"/></filter><radialGradient id="wx" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#E8B7A0"/><stop offset=".55" stop-color="#C58A72"/><stop offset="1" stop-color="#94604B"/></radialGradient><filter id="ws" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#3b1f14" flood-opacity=".45"/></filter><filter id="gr" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 .42  0 0 0 0 .40  0 0 0 0 .33  0 0 0 .55 0"/></filter></defs>
             <g filter="url(#sh)"><rect x="6" y="14" width="288" height="176" fill="url(#eg)"/></g>
-            <g class="lt"><rect x="22" y="30" width="256" height="150" fill="#FFFDFB"/><text x="150" y="110" text-anchor="middle" font-family="WindSong, cursive" font-size="22" fill="#906D38" textLength="190" lengthAdjust="spacingAndGlyphs">${esc(g.short)} &amp; ${esc(b.short)}</text></g>
+            <g class="lt"><rect x="22" y="30" width="256" height="150" fill="#FFFDFB"/><text x="150" y="110" text-anchor="middle" font-family="WindSong, cursive" font-size="25" fill="#7A5726" stroke="#7A5726" stroke-width=".9" textLength="214" lengthAdjust="spacingAndGlyphs">${esc(g.short)} &amp; ${esc(b.short)}</text></g>
             <path d="M6 190 L150 108 L294 190Z" fill="#DAD8C9"/>
             <path d="M6 14 L152 118 L6 190Z" fill="#E3E1D4"/>
             <path d="M294 14 L148 118 L294 190Z" fill="#DFDDCE"/>
@@ -328,7 +330,7 @@ function coverHTML(){
 function cardHTML(){
   const ph = S.photos, album = S.album;
   const banks = S.banks || [];
-  const wide = new Set([4]);
+  const wide = new Set();
   return `<main class="card" id="card">
   <section class="sec inv">
     ${wash('width:300px;height:300px;left:-130px;top:40px')}${wash('width:320px;height:320px;right:-150px;top:520px')}
@@ -373,7 +375,7 @@ function cardHTML(){
       <div class="pc"><div class="fr"><img src="${ph.groom}" alt="Chú rể" loading="lazy"></div><div class="role">Chú Rể</div><div class="who">${esc(g.short)}</div><div class="sub">${esc(g.full)}</div></div>
       <div class="pc"><div class="fr"><img src="${ph.bride}" alt="Cô dâu" loading="lazy"></div><div class="role">Cô Dâu</div><div class="who">${esc(b.short)}</div><div class="sub">${esc(b.full)}</div></div>
     </div>
-    <div class="story"><p style="font-style:italic">${esc(S.intro)}</p>${paras(S.story)}</div>
+    ${noRsvp ? "" : `<div class="story"><p style="font-style:italic">${esc(S.intro)}</p>${paras(S.story)}</div>`}
   </section>
 
   <section class="sec sd reveal">
@@ -394,13 +396,7 @@ function cardHTML(){
     <div class="alb-grid">${album.slice(2).map((u,i) => `<button class="tf${wide.has(i+2)?' wide':''}" type="button" data-lb="${i+2}" aria-label="Xem ảnh ${i+3}"><img src="${u}" alt="" loading="lazy"></button>`).join('')}</div>
   </section>
 
-  ${noRsvp ? `<section class="sec rsvp-sec reveal">
-    <h2 class="h2s">Mừng cưới</h2>
-    ${banks.length ? `<div class="actions"><button class="btn ghost" type="button" data-act="gift">Gửi quà mừng cưới</button></div>` : ''}
-    <div class="gift" id="gift" hidden>
-      ${banks.map(k => `<div class="bank"><div><div class="cap">${esc(k.who)}</div><div>${esc(k.bank)} · ${esc(k.name)}</div><div class="num">${esc(k.number)}</div><button class="btn ghost sm" type="button" data-copy="${esc(k.number)}">Sao chép số tài khoản</button></div><img class="qr" src="${esc(k.qr)}" alt="Mã QR chuyển khoản" loading="lazy"></div>`).join('')}
-    </div>
-  </section>` : `  <section class="sec rsvp-sec reveal">
+  ${noRsvp ? '' : `  <section class="sec rsvp-sec reveal">
     <h2 class="h2s">Xác nhận tham dự</h2>
     <p class="s">Hãy cho chúng mình biết bạn có đến được không để chuẩn bị đón tiếp chu đáo nhất nhé.</p>
     <form class="rsvp" id="rsvpForm" novalidate>
