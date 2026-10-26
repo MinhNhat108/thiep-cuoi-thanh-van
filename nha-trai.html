@@ -305,7 +305,7 @@ const wash = style => `<div class="wash" style="${style}" aria-hidden="true"></d
 const g = S.groom, b = S.bride, p = parts(S.date), ev = S.event;
 const dotDate = `${pad(p.da)}.${pad(p.mo)}.${p.y}`;
 const lineLbl = (l, v) => String(v||'').replace(/^(Ông|Bà)\s+/, l => l.trim() + ': ');
-const famBlock = (title, f) => `<div><b>${title}</b>${esc(lineLbl('', f.father))}<br>${esc(lineLbl('', f.mother))}<span class="pl">${esc(f.place)}</span></div>`;
+const famBlock = (title, f) => `<div><b>${title}</b>${esc(lineLbl('', f.father))}<br>${esc(lineLbl('', f.mother))}${noRsvp ? '' : `<span class="pl">${esc(f.place)}</span>`}</div>`;
 
 function waxPts(cx, cy, r){ const n = 56, o = []; for (let i = 0; i < n; i++){ const a = i / n * Math.PI * 2; const k = 1 + .05 * Math.sin(a * 7 + 1) + .035 * Math.sin(a * 12 + 2) + .02 * Math.sin(a * 19); o.push((cx + Math.cos(a) * r * k).toFixed(1) + ',' + (cy + Math.sin(a) * r * k).toFixed(1)); } return o.join(' '); }
 function coverHTML(){
