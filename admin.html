@@ -198,7 +198,7 @@ const getSide = () => {
   return r ? r.value : 'trai';
 };
 
-const makeLink = (full, side) => BASE + '?to=' + encodeURIComponent(full) + (side ? '&side=' + encodeURIComponent(side) : '');
+const makeLink = (full, side) => BASE + ((side === 'trai' || side === 'bome') ? 'nha-trai.html' : '') + '?to=' + encodeURIComponent(full) + (side ? '&side=' + encodeURIComponent(side) : '');
 const fullName = (title,name) => (title + ' ' + name).trim();
 
 const msg = (full, link, side) => {

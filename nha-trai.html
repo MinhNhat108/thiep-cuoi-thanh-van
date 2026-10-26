@@ -4,7 +4,7 @@
 <title>Thiệp cưới Ngọc Thành &amp; Vân Anh · Nhà Trai</title>
 <meta name="description" content="Trân trọng kính mời bạn đến dự tiệc cưới Ngọc Thành &amp; Vân Anh · 28.11.2026">
 <meta property="og:title" content="Thiệp cưới Ngọc Thành &amp; Vân Anh">
-<meta property="og:image" content="photos/hero.jpg">
+<meta property="og:image" content="https://minhnhat108.github.io/thiep-cuoi-thanh-van/photos/share.png"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&family=Pinyon+Script&family=Noto+Serif+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap">
 <style>
@@ -130,7 +130,7 @@ img{display:block;max-width:100%}
 .pc .fr{aspect-ratio:3/4;border:1px solid var(--gold-lt);padding:6px;background:var(--paper);box-shadow:0 6px 16px rgba(90,70,48,.12)}
 .pc .fr img{width:100%;height:100%;object-fit:cover}
 .pc .role{font-family:var(--script);color:var(--gold);font-size:36px;margin-top:8px;line-height:1.3}
-.pc .who{font-family:"Pinyon Script",var(--script);font-size:34px;font-weight:400;line-height:1.3;margin-top:10px}
+.pc .who{text-wrap:balance;font-family:"Pinyon Script",var(--script);font-size:34px;font-weight:400;line-height:1.3;margin-top:10px}
 .pc .sub{font-family:var(--ui);font-size:13px;color:var(--muted)}
 .h2s{font-family:var(--script);color:var(--gold);font-size:clamp(34px,10.5vw,44px);white-space:nowrap;margin:0;line-height:1.3;font-weight:500}
 .story{margin-top:26px}
@@ -345,7 +345,7 @@ function cardHTML(){
   <section class="sec inv">
     ${wash('width:300px;height:300px;left:-130px;top:40px')}${wash('width:320px;height:320px;right:-150px;top:520px')}
     ${flora('', 'left:-50px;top:60px;width:190px;height:262px;transform:rotate(6deg)')}${flora('', 'right:-62px;bottom:40px;width:210px;height:290px;transform:rotate(-170deg)')}
-    <div class="vtop"><div class="k">Địa điểm tổ chức</div><div class="v">${esc(ev.place)}</div><div class="a">${esc(ev.address)}</div><div class="w">${esc(S.time)} – ${DOW[p.dow]}, ${dotDate}</div><a class="dir" href="${esc(ev.map)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Chỉ đường</a></div>
+    <div class="vtop"><div class="k">Địa điểm tổ chức</div><div class="v">${esc(ev.place)}</div><div class="a">${esc(ev.address).replace(' · ','<br>')}</div><div class="w">${esc(S.time)} – ${DOW[p.dow]}, ${dotDate}</div><a class="dir" href="${esc(ev.map)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Chỉ đường</a></div>
     <div class="fam">${famBlock('Nhà Trai', S.groomFamily)}${famBlock('Nhà Gái', S.brideFamily)}</div>
     <h2 class="h-invite">TRÂN TRỌNG KÍNH MỜI</h2>
     <div class="guest-script">${guest ? esc(guest) : 'Quý Khách'}</div>
@@ -383,7 +383,7 @@ function cardHTML(){
     <h2 class="h2s">Chú rể <svg class="rg" style="width:68px;height:40px;vertical-align:-8px" viewBox="0 0 120 70" aria-label="và" role="img"><use href="#rings"/></svg> Cô dâu</h2>
     <div class="pair">
       <div class="pc"><div class="fr"><img src="${ph.groom}" alt="Chú rể" loading="lazy"></div><div class="who">${esc(g.full)}</div></div>
-      <div class="pc"><div class="fr"><img src="${ph.bride}" alt="Cô dâu" loading="lazy"></div><div class="who">${esc(b.full)}</div></div>
+      <div class="pc"><div class="fr"><img src="${ph.bride}" alt="Cô dâu" loading="lazy"></div><div class="who">${esc(b.full).replace(/ (\S+)$/,'&nbsp;$1')}</div></div>
     </div>
     ${noRsvp ? "" : `<div class="story"><p style="font-style:italic">${esc(S.intro)}</p>${paras(S.story)}</div>`}
   </section>
