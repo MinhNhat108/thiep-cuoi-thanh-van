@@ -72,7 +72,7 @@ tr:hover td{background:#fffaf2}
 <body>
 <header>
   <h1>Tạo thiệp mời cá nhân hóa</h1>
-  <p>Đám cưới Ngọc Thành & Vân Anh · Phân loại Nhà Trai / Nhà Gái</p>
+  <p>Đám cưới Ngọc Thành & Vân Anh · Nhà Trai / Nhà Gái / Bố mẹ chú rể</p>
 </header>
 
 <main>
@@ -85,7 +85,7 @@ tr:hover td{background:#fffaf2}
         <div class="side-chips">
           <label class="side-chip"><input type="radio" name="side" value="trai" checked> <span>🎩 Nhà Trai (Chú rể)</span></label>
           <label class="side-chip"><input type="radio" name="side" value="gai"> <span>👰 Nhà Gái (Cô dâu)</span></label>
-          <label class="side-chip"><input type="radio" name="side" value=""> <span>✨ Cả hai bên (Chung)</span></label>
+          <label class="side-chip"><input type="radio" name="side" value="bome"> <span>👨‍👩‍👦 Bố mẹ chú rể</span></label>
         </div>
         <div class="hint" id="sideHint">Chỉ hiện tiệc cưới Nhà Trai (28/11 tại Khách sạn Hacinco, Hà Nội), tự động ẩn lễ nhà gái.</div>
       </div>
@@ -146,7 +146,7 @@ tr:hover td{background:#fffaf2}
       <option value="all">Tất cả bên (Trai & Gái)</option>
       <option value="trai">Nhà Trai</option>
       <option value="gai">Nhà Gái</option>
-      <option value="both">Cả hai bên</option>
+      <option value="bome">Bố mẹ chú rể</option>
     </select>
     <select id="filter">
       <option value="all">Tất cả trạng thái</option>
@@ -202,7 +202,7 @@ const makeLink = (full, side) => BASE + '?to=' + encodeURIComponent(full) + (sid
 const fullName = (title,name) => (title + ' ' + name).trim();
 
 const msg = (full, link, side) => {
-  if (side === 'trai') {
+  if (side === 'trai' || side === 'bome') {
     return `Kính gửi ${full},
 
 Gia đình chúng tôi trân trọng kính mời ${full} đến dự Tiệc Cưới Nhà Trai của Ngọc Thành & Vân Anh.
@@ -249,7 +249,7 @@ function updateSideHint(){
   const h = $('sideHint');
   if (s === 'trai') h.textContent = 'Chỉ hiện tiệc cưới Nhà Trai (28/11 tại Khách sạn Hacinco, Hà Nội), tự động ẩn lễ nhà gái.';
   else if (s === 'gai') h.textContent = 'Chỉ hiện tiệc cưới & Lễ Vu Quy Nhà Gái (26/11 tại GOLDEN PALACE, Nam Định), tự động ẩn phần tổ chức nhà trai.';
-  else h.textContent = 'Hiển thị đầy đủ tất cả sự kiện của cả Nhà Trai và Nhà Gái.';
+  else h.textContent = 'Thiệp giống Nhà Trai (Hacinco, 28/11) dành cho khách của bố mẹ chú rể, không có phần xác nhận tham dự.';
 }
 
 function renderGen(){
@@ -322,15 +322,15 @@ function render(){
   const q=$('search').value.trim().toLowerCase(), f=$('filter').value, fs=$('filterSide').value;
   const list=guests.filter(g=>{
     const matchStatus = (f==='all'||String(g.status)===f);
-    const matchSide = (fs==='all' || (fs==='trai'&&g.side==='trai') || (fs==='gai'&&g.side==='gai') || (fs==='both'&&!g.side));
-    const matchQuery = (!q||(g.name+' '+(g.group||'')+' '+(g.side==='trai'?'nhà trai':(g.side==='gai'?'nhà gái':'cả hai'))).toLowerCase().includes(q));
+    const matchSide = (fs==='all' || (fs==='trai'&&g.side==='trai') || (fs==='gai'&&g.side==='gai') || (fs==='bome'&&g.side==='bome'));
+    const matchQuery = (!q||(g.name+' '+(g.group||'')+' '+(g.side==='trai'?'nhà trai':(g.side==='gai'?'nhà gái':'bố mẹ chú rể'))).toLowerCase().includes(q));
     return matchStatus && matchSide && matchQuery;
   });
 
   $('rows').innerHTML=list.length?list.map((g,i)=>{
     const sBadge = g.side==='trai'
       ? '<span class="badge" style="background:#fbeae5;color:#6E0F1A">Nhà trai</span>'
-      : (g.side==='gai' ? '<span class="badge" style="background:#fce7f3;color:#9d174d">Nhà gái</span>' : '<span class="badge" style="background:#f1f5f9;color:#475569">Cả hai</span>');
+      : (g.side==='gai' ? '<span class="badge" style="background:#fce7f3;color:#9d174d">Nhà gái</span>' : (g.side==='bome' ? '<span class="badge" style="background:#fef3c7;color:#92400e">Bố mẹ chú rể</span>' : '<span class="badge" style="background:#f1f5f9;color:#475569">Chung (cũ)</span>'));
     return `<tr data-id="${g.id}">
       <td data-l="#">${i+1}</td>
       <td data-l="Khách"><b>${esc(g.name)}</b></td>
@@ -378,7 +378,7 @@ $('clear').onclick=()=>{ if(guests.length&&confirm('Xóa toàn bộ '+guests.len
 $('csv').onclick=()=>{
   if(!guests.length) return toast('Danh sách đang trống');
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
-  const sideText = s => s==='trai'?'Nhà trai':(s==='gai'?'Nhà gái':'Cả hai');
+  const sideText = s => s==='trai'?'Nhà trai':(s==='gai'?'Nhà gái':'Bố mẹ chú rể');
   const rows=[['STT','Khách mời','Bên','Nhóm','Link','Ngày tạo','Trạng thái']].concat(
     guests.map((g,i)=>[i+1,g.name,sideText(g.side),g.group,g.link,fmt(g.created),STATUS[g.status]]));
   const csv='﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n');
