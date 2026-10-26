@@ -62,9 +62,10 @@ img{display:block;max-width:100%}
 .fam b{display:block;font-size:19px;font-weight:700;margin-bottom:3px}
 .fam{font-weight:500;color:var(--gold-dk);font-size:16px}
 .fam .pl{display:block;font-size:13.5px;font-weight:500;opacity:1;margin-top:3px}
-.cover-bar>div:first-child{color:#1a1a1a}
+.cover-names,.cover-names .n,.cover-date,.tap,.cover-bar,.cover-bar>div,.cover-bar b,.cover-bar span{color:#1a1a1a}
+.cover-names .rg{color:#1a1a1a}
 .fam>div:first-child .pl{opacity:1}
-.pc:first-child .role,.pc:first-child .who,.pc:first-child .sub{color:#1a1a1a}
+.couple,.couple .h2s,.couple .story,.couple .story p,.couple .pc .who,.couple .pc .sub,.couple .pc .role{color:#1a1a1a}
 .inv,.inv .fam,.inv .fam>div,.inv .fam .pl,.inv .h-invite,.inv .lede,.inv .names-big .n,.inv .when,.inv .when-lbl,.inv .lunar,.inv .invtxt,.inv .dir{color:#1a1a1a}
 .inv .fam .pl{opacity:1}
 .inv .rule{background:#cfc6bb}
@@ -129,7 +130,7 @@ img{display:block;max-width:100%}
 .pc .fr{aspect-ratio:3/4;border:1px solid var(--gold-lt);padding:6px;background:var(--paper);box-shadow:0 6px 16px rgba(90,70,48,.12)}
 .pc .fr img{width:100%;height:100%;object-fit:cover}
 .pc .role{font-family:var(--script);color:var(--gold);font-size:36px;margin-top:8px;line-height:1.3}
-.pc .who{font-size:20px;font-weight:400;color:var(--gold)}
+.pc .who{font-family:"Pinyon Script",var(--script);font-size:34px;font-weight:400;line-height:1.3;margin-top:10px}
 .pc .sub{font-family:var(--ui);font-size:13px;color:var(--muted)}
 .h2s{font-family:var(--script);color:var(--gold);font-size:clamp(34px,10.5vw,44px);white-space:nowrap;margin:0;line-height:1.3;font-weight:500}
 .story{margin-top:26px}
@@ -260,7 +261,7 @@ img{display:block;max-width:100%}
  "invite":"Trân trọng mời bạn đến chung vui trong ngày đặc biệt của chúng mình!",
  "story":"Một năm, từ một cuộc gặp gỡ tình cờ, chúng mình đã chọn ở lại bên nhau.\n\nKhông cần quá nhiều điều lớn lao, chỉ những ngày bình thường có nhau cũng đủ để hiểu rằng đây là người mình muốn đồng hành.\n\nHôm nay, chúng mình viết tiếp câu chuyện ấy bằng một lời hứa dài lâu.",
  "closing":"Sự hiện diện của bạn là món quà ý nghĩa nhất với chúng mình.",
- "photos":{"timeline":"photos/couple.jpg","saveDate":"photos/story.jpg","thanks":"photos/album-8.jpg","groom":"photos/groom.jpg","bride":"photos/bride.jpg"},
+ "photos":{"timeline":"photos/story.jpg","saveDate":"photos/couple.jpg","thanks":"photos/album-8.jpg","groom":"photos/groom.jpg","bride":"photos/bride.jpg"},
  "album":["photos/couple.jpg","photos/album-3.jpg","photos/story.jpg","photos/album-8.jpg","photos/hero.jpg","photos/album-9.jpg","photos/album-1.jpg","photos/groom.jpg","photos/bride.jpg","photos/album-2.jpg","photos/album-4.jpg","photos/album-5.jpg","photos/album-6.jpg","photos/album-7.jpg"],
  "music":"music.mp3","musicName":"Ngày Này Người Con Gái Này – Vũ Cát Tường",
  "phones":{"groom":"0968 219 930","bride":"0855 000 527"},
@@ -320,7 +321,7 @@ function coverHTML(){
             <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6E4D8"/><stop offset="1" stop-color="#D2D0C1"/></linearGradient>
             <filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#5a4630" flood-opacity=".25"/></filter><radialGradient id="wx" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#E8B7A0"/><stop offset=".55" stop-color="#C58A72"/><stop offset="1" stop-color="#94604B"/></radialGradient><filter id="ws" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#3b1f14" flood-opacity=".45"/></filter><filter id="gr" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 .42  0 0 0 0 .40  0 0 0 0 .33  0 0 0 .55 0"/></filter></defs>
             <g filter="url(#sh)"><rect x="6" y="14" width="288" height="176" fill="url(#eg)"/></g>
-            <g class="lt"><rect x="22" y="30" width="256" height="150" fill="#FFFDFB"/><text x="150" y="110" text-anchor="middle" font-family="WindSong, cursive" font-size="25" fill="#7A5726" stroke="#7A5726" stroke-width=".9" textLength="214" lengthAdjust="spacingAndGlyphs">${esc(g.short)} &amp; ${esc(b.short)}</text></g>
+            <g class="lt"><rect x="22" y="30" width="256" height="150" fill="#FFFDFB"/><text x="150" y="110" text-anchor="middle" font-family="WindSong, cursive" font-size="25" fill="#1a1a1a" stroke="#1a1a1a" stroke-width=".9" textLength="214" lengthAdjust="spacingAndGlyphs">${esc(g.short)} &amp; ${esc(b.short)}</text></g>
             <path d="M6 190 L150 108 L294 190Z" fill="#DAD8C9"/>
             <path d="M6 14 L152 118 L6 190Z" fill="#E3E1D4"/>
             <path d="M294 14 L148 118 L294 190Z" fill="#DFDDCE"/>
@@ -354,7 +355,7 @@ function cardHTML(){
     <div class="rule"></div>
     <div class="when"><div class="t">${esc(S.time)} – ${DOW[p.dow]}</div><div class="d">${dotDate}</div><div class="lunar">(${lunarText(p)})</div></div>
     <div class="rule"></div>
-    <p class="invtxt">${esc(S.invite)}</p>
+    <p class="invtxt">${noRsvp ? 'Trân trọng mời quý khách đến chung vui cùng gia đình chúng tôi' : esc(S.invite)}</p>
   </section>
 
   <section class="sec tl reveal">
@@ -381,16 +382,16 @@ function cardHTML(){
     ${wash('width:260px;height:260px;right:-120px;top:-60px')}
     <h2 class="h2s">Chú rể <svg class="rg" style="width:68px;height:40px;vertical-align:-8px" viewBox="0 0 120 70" aria-label="và" role="img"><use href="#rings"/></svg> Cô dâu</h2>
     <div class="pair">
-      <div class="pc"><div class="fr"><img src="${ph.groom}" alt="Chú rể" loading="lazy"></div><div class="role">Chú Rể</div><div class="who">${esc(g.short)}</div><div class="sub">${esc(g.full)}</div></div>
-      <div class="pc"><div class="fr"><img src="${ph.bride}" alt="Cô dâu" loading="lazy"></div><div class="role">Cô Dâu</div><div class="who">${esc(b.short)}</div><div class="sub">${esc(b.full)}</div></div>
+      <div class="pc"><div class="fr"><img src="${ph.groom}" alt="Chú rể" loading="lazy"></div><div class="who">${esc(g.full)}</div></div>
+      <div class="pc"><div class="fr"><img src="${ph.bride}" alt="Cô dâu" loading="lazy"></div><div class="who">${esc(b.full)}</div></div>
     </div>
     ${noRsvp ? "" : `<div class="story"><p style="font-style:italic">${esc(S.intro)}</p>${paras(S.story)}</div>`}
   </section>
 
-  <section class="sec sd reveal">
+  ${noRsvp ? '' : `  <section class="sec sd reveal">
     <div class="sd-bg"><img class="kb" src="${ph.saveDate}" alt="" loading="lazy"></div>
     <div class="sd-in"><h2>Save the date</h2><div class="nm">${esc(g.short)}<svg class="rg" viewBox="0 0 120 70" aria-label="và" role="img"><use href="#rings"/></svg>${esc(b.short)}</div><div class="dt">${dotDate}</div></div>
-  </section>
+  </section>`}
 
   ${noRsvp ? '' : `<div class="film" aria-hidden="true"><div class="film-track">${album.concat(album).map(u => `<img src="${u}" alt="" loading="lazy">`).join('')}</div></div>
   <section class="alb reveal">
@@ -436,7 +437,7 @@ function cardHTML(){
 
   <section class="sec ty">
     <div class="ty-bg"><img class="kb" src="${ph.thanks}" alt="" loading="lazy"></div>
-    <div class="ty-in"><h2>Thank you !</h2><p>${esc(S.closing)}</p></div>
+    <div class="ty-in"><h2>Thank you !</h2><p>${noRsvp ? 'Sự hiện diện của quý khách là món quà ý nghĩa nhất với gia đình chúng tôi.' : esc(S.closing)}</p></div>
   </section>
   <footer class="foot">${esc(g.short)} &amp; ${esc(b.short)} · ${dotDate}</footer>
 </main>
